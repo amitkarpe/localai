@@ -9,6 +9,7 @@
 - Day-1 capability check was re-run with fresh logs and remains Go on: `/home/dev/git/localai/logs/localai-capability-results-20260530.md`.
 
 ## Next
+- EC2 approval lane executed: instance created/verified i-0eb1c58004c079f30; evidence in /home/dev/.AGENTS-temp/localai-lab/repos/localai/ec2-proof-20260531/.
 - Implement day-1 app wiring for `qwen2.5:1.5b-instruct` only.
 - Capture day-1 runtime hygiene: mount verify, service health check, model inventory, and periodic run logs under `/home/dev/.AGENTS-temp/localai-lab`.
 - Report web review decision via `http://192.168.0.9/localai/localai-mvp-decisions-20260530.html`.
