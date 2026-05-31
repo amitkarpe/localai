@@ -10,16 +10,28 @@ in GitHub.
 
 ## Current Status
 
-Status: pending launch approval
+Status: blocked on instance-type substitution approval
 
 `main` has been pushed. This PR records the proposed run shape and will be
 updated with results after the EC2 test is explicitly launched and completed.
+
+Update after approval request:
+
+- Approved shape was `g5.xlarge`, `qwen2.5-coder:7b-instruct`, max 2 hours,
+  TTL `01-06-26`, stop after test.
+- AWS EC2 API in `ap-southeast-1` returned `InvalidInstanceType` for
+  `g5.xlarge`.
+- Available nearby GPU options found in this account/region:
+  - `g4dn.xlarge`: 4 vCPU, 16 GiB RAM, NVIDIA T4 16 GiB
+  - `g4dn.2xlarge`: 8 vCPU, 32 GiB RAM, NVIDIA T4 16 GiB
+- No EC2 instance was launched because the exact approved instance type is not
+  available.
 
 ## Proposed Run
 
 - AWS profile: `amit`
 - Region: `ap-southeast-1`
-- Instance proposal: `g5.xlarge`
+- Instance proposal: `g5.xlarge` originally; needs substitution approval
 - Model proposal: `qwen2.5-coder:7b-instruct`
 - Runtime: Ollama
 - Access: SSM only
@@ -55,8 +67,8 @@ updated with results after the EC2 test is explicitly launched and completed.
 
 ## Launch Gate
 
-Do not launch paid EC2 from this PR until the exact instance type, model, max
-runtime, TTL, and cleanup rule are approved.
+Do not launch paid EC2 from this PR until the substitute instance type is
+approved.
 
 ## References
 
