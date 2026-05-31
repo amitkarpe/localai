@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LocalAI Capability Test Report — 2026-05-30</title>
+  <style>
+    :root { --bg: #f5f8fd; --card: #fff; --line: #d9e2f5; --text: #111827; --muted: #64748b; --good: #166534; --bad: #b91c1c; }
+    body { margin: 0; padding: 20px; background: linear-gradient(180deg,#f7fbff,#eef4ff 45%,#f5f8fd); color: var(--text); font-family: Arial, Helvetica, sans-serif; }
+    .wrap { max-width: 1080px; margin: 0 auto; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; margin: 12px 0; box-shadow: 0 4px 14px rgba(9,30,66,0.08);} 
+    h1,h2 { margin: 6px 0; }
+    table { width: 100%; border-collapse: collapse; }
+    th,td { text-align: left; border-bottom: 1px solid var(--line); padding: 8px; vertical-align: top; }
+    th { background: #f1f5fd; }
+    .muted { color: var(--muted); }
+    .pass { color: var(--good); font-weight: 700; }
+    .fail { color: var(--bad); font-weight: 700; }
+    code { background: #eef2ff; padding: 2px 5px; border-radius: 5px; }
+    ul { margin-top: 6px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>LocalAI Capability Test Report</h1>
+    <div class="muted">Model: qwen2.5:1.5b-instruct · Generated 2026-05-30T20:51:03+08:00 · Lane: localai</div>
+
+    <div class="card">
+      <h2>Outcome</h2>
+      <p><strong>Decision:</strong> <span class="pass">Go for day-1</span></p>
+      <p><strong>Source artifact:</strong> local-only model at <code>127.0.0.1:11434</code></p>
+      <p><strong>Scope:</strong> local ability check only; no API/network fallback path.</p>
+      <p><strong>Result summary:</strong> Probe <span class="pass">3/3</span>, capability matrix <span class="pass">5/6</span></p>
+    </div>
+
+    <div class="card">
+      <h2>Probe (fixed gate)</h2>
+      <table>
+        <tr><th>Check</th><th>Evidence</th><th>Result</th></tr>
+        <tr><td>Storage check</td><td><code>/mnt/ai</code> mounted on <code>/dev/sda4</code></td><td class="pass">PASS</td></tr>
+        <tr><td>Ollama endpoint</td><td>127.0.0.1:11434</td><td class="pass">PASS</td></tr>
+        <tr><td>Model availability</td><td>qwen2.5:1.5b-instruct present</td><td class="pass">PASS</td></tr>
+        <tr><td>3-prompt gate</td><td><code>localai-day1.sh probe</code></td><td class="pass">PASS 3/3</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>Capability tests</h2>
+      <table>
+        <tr><th>Test</th><th>Goal</th><th>Result</th></tr>
+        <tr><td>P1 Numeric follow-through</td><td>Exact math output</td><td class="pass">PASS</td></tr>
+        <tr><td>P2 Exact instruction</td><td>Token-only reply</td><td class="pass">PASS</td></tr>
+        <tr><td>P3 JSON-only protocol</td><td>Single JSON object w/out extra text</td><td class="fail">FAIL (initial response wrapped in code block)</td></tr>
+        <tr><td>P4 Summarization</td><td>At least 2 bullets</td><td class="pass">PASS</td></tr>
+        <tr><td>P5 Concise reasoning</td><td>Clear one-sentence rationale</td><td class="pass">PASS</td></tr>
+        <tr><td>P6 Structured list</td><td>3 numbered risks with mitigation framing</td><td class="pass">PASS</td></tr>
+        <tr><td>Strict JSON follow-up</td><td>Parser-friendly cleanup from markdown fences</td><td class="pass">PASS (with preprocessing)</td></tr>
+      </table>
+      <p class="muted">Capability pass count file: /home/dev/git/localai/logs/localai-capability-pass-count-20260530.txt</p>
+    </div>
+
+    <div class="card">
+      <h2>Interpretation</h2>
+      <ul>
+        <li>Core reasoning/math/output behavior is solid for day-1 usage.</li>
+        <li>The model is reliably functional but sometimes returns JSON in markdown fences.</li>
+        <li>For downstream integration, sanitize LLM output before JSON parse (strip code fences + validate).</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Next action</h2>
+      <p>Keep day-1 path local-only with <code>qwen2.5:1.5b-instruct</code>, and implement a parser sanitize layer for JSON-consuming prompts.</p>
+    </div>
+
+    <div class="card">
+      <h2>Evidence links</h2>
+      <ul>
+        <li><a href="file:///home/dev/git/localai/logs/localai-capability-results-20260530.md">capability test log</a></li>
+        <li><a href="file:///home/dev/git/localai/logs/localai-capability-pass-count-20260530.txt">capability pass count</a></li>
+        <li><a href="file:///home/dev/.AGENTS-temp/localai-lab/repos/localai/runs/20260530-200300/prompt_results.md">fixed-probe packet</a></li>
+        <li><a href="file:///home/dev/.AGENTS-temp/localai/mvp-model-decision-20260530/closeout-final-20260530.md">lane closeout</a></li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LocalAI MVP Decision — 2026-05-30 (Deep)</title>
+  <style>
+    body { margin: 0; padding: 20px; font-family: Arial, Helvetica, sans-serif; background: #0f172a; color: #e5e7eb; }
+    .wrap { max-width: 980px; margin: 0 auto; }
+    .card { background: #111827; border: 1px solid #334155; border-radius: 10px; padding: 14px 16px; margin: 12px 0; }
+    h1, h2, h3 { margin: 6px 0; }
+    .muted { color: #94a3b8; }
+    .pass { color: #4ade80; font-weight: 700; }
+    .fail { color: #fb7185; font-weight: 700; }
+    .badge { display: inline-block; padding: 6px 10px; border-radius: 999px; background: #b91c1c; color: #fff; font-weight: 700; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { text-align: left; border-bottom: 1px solid #334155; padding: 8px; vertical-align: top; }
+    th { background: #1f2937; }
+    code { background: #1f2937; border-radius: 6px; padding: 2px 5px; }
+    ul { margin: 8px 0; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>LocalAI MVP Decision Report (Deep Validation)</h1>
+    <div class="muted">Date: 2026-05-30 · Lane: localai</div>
+
+    <div class="card">
+      <h2>Decision (high-level prompt set)</h2>
+      <div class="badge">NO-GO for this capability target</div>
+      <p><strong>Primary model tested:</strong> <code>qwen2.5:1.5b-instruct</code> on <code>/mnt/ai</code> (<code>/dev/sda4</code>).</p>
+      <p><strong>Recommended action:</strong> Keep as a <strong>best-effort</strong> candidate only, but do not promote as “approved for deep Python programming workloads” yet.</p>
+    </div>
+
+    <div class="card">
+      <h2>Validation plan (3 fixed prompts)</h2>
+      <ol>
+        <li>Ask model to write <code>merge_intervals_with_gap(...)</code> and validate functional correctness on edge-case inputs.</li>
+        <li>Ask model to write Unicode-safe <code>levenshtein()</code> + <code>top1_closest()</code> and validate accuracy + memory-profile expectation.</li>
+        <li>Ask model to write Bellman-Ford <code>shortest_paths()</code> with negative-cycle reporting and unreachable handling.</li>
+      </ol>
+    </div>
+
+    <div class="card">
+      <h2>Probe results</h2>
+      <table>
+        <tr><th>Prompt</th><th>Acceptance criteria</th><th>Observed</th><th>Status</th></tr>
+        <tr>
+          <td>1) Interval merge program</td>
+          <td>Merges disjoint intervals correctly for both gap and malformed-input edge cases.</td>
+          <td>Returned code merged only first block and dropped valid later intervals.</td>
+          <td class="fail">FAIL</td>
+        </tr>
+        <tr>
+          <td>2) Levenshtein + closest-program</td>
+          <td>Returns correct matches and uses O(min(m,n)) space.</td>
+          <td>Correctness not accepted due full DP matrix allocation (O(mn)); violates high-level performance requirement.</td>
+          <td class="fail">FAIL</td>
+        </tr>
+        <tr>
+          <td>3) Bellman-Ford with negative-cycle return</td>
+          <td>Returns list distances / <code>None</code> / <code>negative_cycle</code> correctly.</td>
+          <td>Response included non-code prose and malformed extracted code block causing syntax failure.</td>
+          <td class="fail">FAIL</td>
+        </tr>
+      </table>
+      <p><strong>Observed score:</strong> 0/3.</p>
+    </div>
+
+    <div class="card">
+      <h2>Stack evaluation for testing</h2>
+      <ul>
+        <li>opencode: available but not used as evaluator for this deep test.</li>
+        <li>codex CLI: available; used only as shell/controller path, not trusted as local runtime evaluator.</li>
+        <li>hermes agents: unavailable in this environment for this test set.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Next implementation action</h2>
+      <p>Pause the “deep coding capability” claim for day-1 acceptance. Continue with non-programming local-first checks only, or re-run with a larger model for a second candidate before any production-facing automation code path is accepted.</p>
+    </div>
+
+    <div class="card">
+      <h2>Evidence</h2>
+      <ul>
+        <li><a href="/home/dev/git/localai/logs/localai-capability-results-20260530-deep.md">/home/dev/git/localai/logs/localai-capability-results-20260530-deep.md</a></li>
+        <li><a href="/home/dev/git/localai/logs/localai-capability-pass-count-20260530-deep.txt">/home/dev/git/localai/logs/localai-capability-pass-count-20260530-deep.txt</a></li>
+        <li><a href="/home/dev/git/localai/PLANS.md">/home/dev/git/localai/PLANS.md</a></li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

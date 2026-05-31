@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LocalAI MVP Decision — 2026-05-30</title>
+  <style>
+    :root {
+      --bg: #f5f8fd;
+      --card: #ffffff;
+      --line: #d9e2f5;
+      --text: #111827;
+      --muted: #64748b;
+      --good: #166534;
+      --bad: #b91c1c;
+    }
+    body { margin: 0; padding: 20px; background: linear-gradient(180deg,#f7fbff,#eef4ff 50%,#f5f8fd); color: var(--text); font-family: Arial, Helvetica, sans-serif; }
+    .wrap { max-width: 980px; margin: 0 auto; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; margin: 12px 0; box-shadow: 0 4px 14px rgba(9, 30, 66, 0.08); }
+    h1,h2,h3 { margin: 6px 0; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { text-align: left; border-bottom: 1px solid var(--line); padding: 8px; vertical-align: top; }
+    th { background: #f1f5fd; }
+    .badge { display: inline-block; padding: 6px 10px; border-radius: 999px; background: #dbeafe; color: #1e3a8a; font-weight: bold; }
+    .good { color: var(--good); font-weight: 700; }
+    .bad { color: var(--bad); font-weight: 700; }
+    .muted { color: var(--muted); }
+    code { background: #eef2ff; padding: 2px 5px; border-radius: 5px; }
+    ul { margin-top: 6px; }
+    .pass { color: var(--good); }
+    .fail { color: var(--bad); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>LocalAI MVP Decision Report</h1>
+    <div class="muted">2026-05-30 · LocalAI</div>
+
+    <div class="card">
+      <h2>Decision</h2>
+      <div class="badge">GO for day-1 build</div>
+      <p><strong>Primary model:</strong> <code>qwen2.5:1.5b-instruct</code></p>
+      <p><strong>Fallback:</strong> no automatic API fallback. If local path fails, stop and re-rank (manual approval required).</p>
+      <p><strong>Storage requirement:</strong> <code>/mnt/ai</code> (on <code>/dev/sda4</code>) only.</p>
+    </div>
+
+    <div class="card">
+      <h2>Why this model was chosen</h2>
+      <ul>
+        <li>Small enough for low-resource local usage, while still passing all three fixed prompts.</li>
+        <li>Single-model lock keeps integration low risk and aligns with 80% useful outcome target.</li>
+        <li>Model metadata and artifacts can be hosted on local storage (<code>/mnt/ai</code>) after configuration.</li>
+        <li>No hard blocker from runtime quality for day-1 envelope.</li>
+      </ul>
+      <p class="muted">Fallback model path remains disabled by policy; if this model ever fails hard, re-open with explicit approval.</p>
+    </div>
+
+    <div class="card">
+      <h2>Available-stack evaluation for local validation</h2>
+      <table>
+        <tr><th>Stack</th><th>Available</th><th>Local validation result</th></tr>
+        <tr>
+          <td>opencode</td>
+          <td>Yes</td>
+          <td>Installed, but no local-provider wiring was confirmed in this run; treated as manual extension path only.</td>
+        </tr>
+        <tr>
+          <td>codex CLI</td>
+          <td>Yes</td>
+          <td>Available but provider-oriented and not a native local-only stack. Useful for later comparison, not for this MVP proof.</td>
+        </tr>
+        <tr>
+          <td>hermes agents</td>
+          <td>No</td>
+          <td>Binary not present in host stack at test time.</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>x.com access impact</h2>
+      <ul>
+        <li>Model choice and fixed-prompt gate are local; no dependence on x.com data feeds.</li>
+        <li>Blocking x.com does not affect day-1 model viability.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Validation plan and results (fixed prompts)</h2>
+      <table>
+        <tr><th>Prompt</th><th>Acceptance criteria</th><th>Result</th></tr>
+        <tr>
+          <td>1. What is 12 * 13? Answer with only a number.</td>
+          <td>Exact value <code>156</code></td>
+          <td class="pass">PASS</td>
+        </tr>
+        <tr>
+          <td>2. One-sentence practical reason to run AI locally on a small machine.</td>
+          <td>Non-empty sentence</td>
+          <td class="pass">PASS</td>
+        </tr>
+        <tr>
+          <td>3. One privacy risk when storing artifacts on shared mount + mitigation.</td>
+          <td>Mentions risk + mitigation terms</td>
+          <td class="pass">PASS</td>
+        </tr>
+      </table>
+      <p><strong>Passing rule:</strong> 3/3 required. <strong>Observed:</strong> <strong>3/3</strong>.</p>
+    </div>
+
+    <div class="card">
+      <h2>Risks / blockers observed</h2>
+      <ul>
+        <li><span class="good">Resolved:</span> Initial runtime missing and /mnt/ai was unmounted.</li>
+        <li><span class="good">Resolved:</span> Ollama not installed / model not available.</li>
+        <li><span class="good">Resolved:</span> Model cache path was initially not aligned to <code>/mnt/ai</code>; updated service override and layout now fixed.</li>
+        <li><span class="bad">Open:</span> script currently uses local bootstrap path assumptions for <code>/dev/sda4</code>.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Exact next implementation action</h2>
+      <p>Implement day-1 local stack with <code>qwen2.5:1.5b-instruct</code> only, keep API fallback disabled, and use the shared folder structure under <code>/home/dev/.AGENTS-temp/localai-lab</code> for all future runs/logs.</p>
+    </div>
+
+    <div class="card">
+      <h2>Evidence references</h2>
+      <ul>
+        <li><a href="../repo/localai-lab/repos/localai/runs/20260530-200300/prompt_results.md">prompt_results.md</a></li>
+        <li><a href="../repo/localai-lab/repos/localai/runs/20260530-200300/prompt_pass_count.txt">prompt_pass_count.txt</a></li>
+        <li><a href="../repo/localai-lab/repos/localai/runs/20260530-200300/probe.txt">probe.txt</a></li>
+        <li><a href="../repo/localai-lab/shared/install-logs/ollama-serve.log">ollama-serve.log</a></li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

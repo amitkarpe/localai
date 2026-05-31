@@ -1,0 +1,7 @@
+logs/
+reports/*.log
+reports/*.tmp
+*.swp
+*.swo
+__pycache__/
+.DS_Store

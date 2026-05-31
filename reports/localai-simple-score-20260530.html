@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LocalAI Simple Score Report — 2026-05-30</title>
+  <style>
+    body { margin: 0; padding: 20px; font-family: Arial, Helvetica, sans-serif; background: #f8fafc; color: #0f172a; }
+    .wrap { max-width: 960px; margin: 0 auto; }
+    .card { background: #fff; border: 1px solid #dbeafe; border-radius: 10px; padding: 14px 16px; margin: 10px 0; }
+    h1, h2 { margin: 4px 0; }
+    .pass { color: #166534; font-weight: 700; }
+    .fail { color: #b91c1c; font-weight: 700; }
+    .muted { color: #475569; }
+    code { background: #eef2ff; padding: 2px 5px; border-radius: 5px; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { border-bottom: 1px solid #e2e8f0; text-align: left; padding: 8px; }
+    th { background: #eff6ff; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>LocalAI Simple Score Report</h1>
+    <div class="muted">Date: 2026-05-30 · Model: qwen2.5:1.5b-instruct</div>
+
+    <div class="card">
+      <h2>Overall score</h2>
+      <p><strong>3/3</strong> (PASS)</p>
+    </div>
+
+    <div class="card">
+      <h2>Prompt test results</h2>
+      <table>
+        <tr><th>Prompt</th><th>Acceptance criteria</th><th>Result</th></tr>
+        <tr><td>1</td><td>Exact number for 12 * 13</td><td class="pass">PASS</td></tr>
+        <tr><td>2</td><td>Exact token <code>READY-FOR-LOCAL</code></td><td class="pass">PASS</td></tr>
+        <tr><td>3</td><td>Valid JSON with task/status fields</td><td class="pass">PASS</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>Notes</h2>
+      <ul>
+        <li>Run used the local endpoint <code>http://127.0.0.1:11434/api/generate</code>.</li>
+        <li>Script used: <code>scripts/localai-simple-score-check.py</code>.</li>
+        <li>Evidence files:</li>
+      </ul>
+      <ul>
+        <li><a href="/home/dev/git/localai/logs/localai-simple-score-results.md">localai-simple-score-results.md</a></li>
+        <li><a href="/home/dev/git/localai/logs/localai-simple-score-pass-count.txt">localai-simple-score-pass-count.txt</a></li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

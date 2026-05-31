@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LocalAI Day-1 Implementation Report — 2026-05-30</title>
+  <style>
+    :root { --bg:#f5f8fd; --card:#ffffff; --line:#d9e2f5; --text:#111827; --muted:#64748b; --good:#166534; --bad:#b91c1c; }
+    body { margin:0; padding:20px; background:#eef4ff; color:var(--text); font-family: Arial, Helvetica, sans-serif; }
+    .wrap{max-width:980px;margin:0 auto}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:12px 0}
+    h1,h2{margin:6px 0}
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:8px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+    th{background:#f1f5fd}
+    .pass{color:var(--good);font-weight:700}.fail{color:var(--bad);font-weight:700}
+    .muted{color:var(--muted)}
+    code{background:#eef2ff;padding:2px 5px;border-radius:5px}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <h1>LocalAI Day-1 Implementation Report</h1>
+  <div class="muted">Updated: 2026-05-30T20:45:02+08:00</div>
+
+  <div class="card">
+    <h2>Decision</h2>
+    <p><strong>Go/No-Go:</strong> <span class="pass">GO</span> for day-1 build</p>
+    <p><strong>Model:</strong> <code>qwen2.5:1.5b-instruct</code></p>
+    <p><strong>Storage:</strong> <code>/mnt/ai</code> on <code>/dev/sda4</code></p>
+    <p><strong>Fallback:</strong> No automatic external/API fallback</p>
+    <p><strong>Gate:</strong> <code>3/3</code> (MVP prompt gate)</p>
+  </div>
+
+  <div class="card">
+    <h2>What was implemented</h2>
+    <ul>
+      <li>Added repo script: <code>scripts/localai-day1.sh</code> with <code>preflight</code>, <code>probe</code>, and <code>run</code> modes.</li>
+      <li>Updated <code>PLANS.md</code> and <code>README.md</code> with concrete execution/runbook guidance.</li>
+      <li>Kept strict local constraint: model and runtime checks are local-only.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Implementation evidence</h2>
+    <table>
+      <tr><th>Item</th><th>Result</th></tr>
+      <tr><td>Mount + storage checks</td><td class="pass">PASS</td></tr>
+      <tr><td>Ollama endpoint check</td><td class="pass">PASS</td></tr>
+      <tr><td>Approved model inventory</td><td class="pass">PASS (qwen2.5:1.5b-instruct)</td></tr>
+      <tr><td>Fixed-prompt gate</td><td class="pass">PASS 3/3</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>Commands</h2>
+    <ul>
+      <li><code>./scripts/localai-day1.sh preflight</code></li>
+      <li><code>./scripts/localai-day1.sh probe</code></li>
+      <li><code>./scripts/localai-day1.sh run "Your question"</code></li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Evidence paths</h2>
+    <ul>
+      <li><a href="file:///home/dev/git/localai/scripts/localai-day1.sh">scripts/localai-day1.sh</a></li>
+      <li><a href="file:///home/dev/git/localai/logs/localai-day1-gate-pass-count.txt">logs/localai-day1-gate-pass-count.txt</a></li>
+      <li><a href="file:///home/dev/.AGENTS-temp/localai/mvp-model-decision-20260530.done">lane done marker</a></li>
+      <li><a href="file:///home/dev/git/localai/PLANS.md">PLANS.md</a></li>
+    </ul>
+  </div>
+</div>
+</body>
+</html>
