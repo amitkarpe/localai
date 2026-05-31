@@ -15,8 +15,8 @@ MODEL_NAME = os.environ.get("MODEL_NAME", os.environ.get("LOCALAI_MODEL_NAME", "
 OLLAMA_HOST = os.environ.get("OLLAMA_HOST", "127.0.0.1:11434")
 OLLAMA_API = f"http://{OLLAMA_HOST}/api/generate"
 
-REPO = Path(__file__).resolve().parents[1]
-LOGS = REPO / "logs"
+REPO = Path(__file__).resolve().parents[2]
+LOGS = REPO / "logs" / "local"
 LOGS.mkdir(parents=True, exist_ok=True)
 REPORT_FILE = LOGS / "localai-simple-score-results.md"
 COUNT_FILE = LOGS / "localai-simple-score-pass-count.txt"
@@ -49,7 +49,13 @@ def strip_code_fences(text: str) -> str:
 
 def preflight() -> bool:
     try:
-        run([str(REPO / "scripts/localai-day1.sh"), "preflight"], cwd=str(REPO), check=True, text=True, capture_output=True)
+        run(
+            [str(REPO / "scripts/local/localai-day1.sh"), "preflight"],
+            cwd=str(REPO),
+            check=True,
+            text=True,
+            capture_output=True,
+        )
         return True
     except CalledProcessError as exc:
         print("preflight failed")

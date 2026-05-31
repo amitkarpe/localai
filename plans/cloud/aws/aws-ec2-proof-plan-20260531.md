@@ -44,7 +44,7 @@ Private GitHub proof for LocalAI learning workflow using only AWS profile `amit`
 1. Bootstrap environment from repo materials.
 2. Run basic validation script + model smoke test.
 3. Execute one coding-helper task end-to-end.
-4. Capture logs/results under repo evidence path.
+4. Capture logs/results under the external `.AGENTS-temp` evidence path.
 5. Stop instance and verify cleanup.
 
 ## Success criteria
