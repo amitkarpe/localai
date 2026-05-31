@@ -15,13 +15,17 @@ Rules:
 - Keep compatibility artifacts under `~/.AGENTS-temp/localai/` via symlink pointers (`long-term-root`, `long-term-localai`).
 - Do not store secrets in this repo.
 - Prefer ext4-friendly local files and small, reviewable notes.
-- Keep current plan in `PLANS.md`; keep long-range direction in `ROADMAP.md`.
+- Use `CONTEXT.md` as the current truth / restart state.
+- Use `HANDOFF.md` only for explicit handoff or session transfer.
+- Treat `PLANS.md` as legacy until Amit approves deletion.
+- Keep long-range direction in `ROADMAP.md`.
 
 Read order:
 1. `AGENTS.md`
-2. `README.md`
-3. `ROADMAP.md`
-4. `PLANS.md`
+2. `CONTEXT.md`
+3. `README.md`
+4. `ROADMAP.md`
+5. `HANDOFF.md` only when resuming a transfer/milestone
 
 Active layout:
 - `prompts/` for prompt drafts
