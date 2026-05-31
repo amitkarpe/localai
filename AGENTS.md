@@ -11,24 +11,31 @@ Session rule:
 Rules:
 - Keep it short and simple.
 - Separate durable docs from logs and scratch files.
-- Store durable evidence under `logs/` or `~/.AGENTS-temp/localai-lab/repos/localai/`.
+- Store local durable evidence under `logs/local/` or `~/.AGENTS-temp/localai-lab/repos/localai/`.
 - Keep compatibility artifacts under `~/.AGENTS-temp/localai/` via symlink pointers (`long-term-root`, `long-term-localai`).
 - Do not store secrets in this repo.
 - Prefer ext4-friendly local files and small, reviewable notes.
-- Keep current plan in `PLANS.md`; keep long-range direction in `ROADMAP.md`.
+- Use `CONTEXT.md` as the current truth / restart state.
+- Use `HANDOFF.md` only for explicit handoff or session transfer.
+- Treat `PLANS.md` as legacy until Amit approves deletion.
+- Keep long-range direction in `ROADMAP.md`.
 
 Read order:
 1. `AGENTS.md`
-2. `README.md`
-3. `ROADMAP.md`
-4. `PLANS.md`
+2. `CONTEXT.md`
+3. `README.md`
+4. `ROADMAP.md`
+5. `HANDOFF.md` only when resuming a transfer/milestone
 
 Active layout:
 - `prompts/` for prompt drafts
 - `experiments/` for test runs
-- `reports/` for browser-ready summaries
-- `logs/` for raw output
-- `scripts/` for helper commands
+- `reports/local/` for local browser-ready summaries
+- `reports/cloud/aws/` for cloud/AWS summary placeholders only
+- `logs/local/` for local raw output
+- `logs/cloud/aws/` for cloud/AWS placeholders only; raw AWS evidence stays outside the repo
+- `scripts/local/` for local helper commands
+- `scripts/cloud/aws/` for future cloud/AWS helper commands after approval
 
 Cross-repo shared layout (preferred for durable runtime artifacts and dependency evidence):
 - `~/.AGENTS-temp/localai-lab/` is the long-term shared workspace.

@@ -7,7 +7,7 @@ REQUIRED_DEVICE="/dev/sda4"
 OLLAMA_MODELS_DIR="${OLLAMA_MODELS:-${MOUNT_POINT}/ollama-models}"
 OLLAMA_HOST="${OLLAMA_HOST:-127.0.0.1:11434}"
 OLLAMA_API="http://${OLLAMA_HOST}/api"
-LOG_DIR="$(cd "$(dirname "$0")/.." && pwd)/logs"
+LOG_DIR="$(cd "$(dirname "$0")/../.." && pwd)/logs/local"
 
 usage() {
   cat <<'USAGE'
@@ -148,7 +148,6 @@ run_probe() {
   fi
 
   local pass=0
-  local responses
   local prompt1="What is 12 * 13? Answer with only a number."
   local prompt2="Reply in one sentence: one practical reason to run AI locally on a small machine."
   local prompt3="Give one short privacy risk if local model artifacts are stored on a shared mount and one mitigation."
@@ -168,7 +167,6 @@ run_probe() {
       return
     fi
     response="$(json_val "$response_json" '.response // empty')"
-    responses["$n"]="$response"
 
     case "$n" in
       1)
@@ -199,7 +197,6 @@ run_probe() {
     esac
   }
 
-  declare -A responses
   run_and_eval 1 "$prompt1"
   run_and_eval 2 "$prompt2"
   run_and_eval 3 "$prompt3"

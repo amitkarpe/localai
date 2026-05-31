@@ -4,8 +4,9 @@ Local workspace for AI setup, model experiments, controller notes, and review ar
 
 Current design:
 - keep controller truth in `AGENTS.md`, `ROADMAP.md`, and `PLANS.md`
-- keep raw outputs in `logs/`
-- keep readable summaries in `reports/`
+- keep local raw outputs in `logs/local/`
+- keep local readable summaries in `reports/local/`
+- keep cloud/AWS plans and placeholders under `*/cloud/aws/`
 - keep prompts in `prompts/`
 - keep durable evidence in `~/.AGENTS-temp/localai-lab/repos/localai/` for long-term reuse across repos.
 
@@ -15,10 +16,10 @@ This repo is meant to stay small and practical.
 
 Run local model checks and inference from repo scripts:
 
-- `./scripts/localai-day1.sh preflight`
-- `./scripts/localai-day1.sh probe`
-- `./scripts/localai-day1.sh run "Your prompt"`
-- `./scripts/localai-day1.sh run-json '{"task":"healthcheck"}'` (sanitized JSON response helper)
+- `./scripts/local/localai-day1.sh preflight`
+- `./scripts/local/localai-day1.sh probe`
+- `./scripts/local/localai-day1.sh run "Your prompt"`
+- `./scripts/local/localai-day1.sh run-json '{"task":"healthcheck"}'` (sanitized JSON response helper)
 
 Rules:
 
@@ -36,7 +37,7 @@ Environment:
 Recommended day-1 command:
 
 ```bash
-./scripts/localai-day1.sh probe
+./scripts/local/localai-day1.sh probe
 ```
 
 This must pass `3/3` before day-1 build proceeds.
