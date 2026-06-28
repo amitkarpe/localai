@@ -20,6 +20,7 @@ Run local model checks and inference from repo scripts:
 - `./scripts/local/localai-day1.sh probe`
 - `./scripts/local/localai-day1.sh run "Your prompt"`
 - `./scripts/local/localai-day1.sh run-json '{"task":"healthcheck"}'` (sanitized JSON response helper)
+- `./scripts/local/localai-json-sanitizer-check.py` (local-only regression check; no model/API call)
 
 Rules:
 
