@@ -44,7 +44,19 @@ PROMPTS = [
 
 
 def strip_code_fences(text: str) -> str:
-    return "\n".join([ln for ln in text.splitlines() if not re.match(r"^\s*```", ln)]).strip()
+    lines = text.splitlines()
+    fence_start = -1
+    fence_end = -1
+    for i, line in enumerate(lines):
+        if re.match(r"^\s*```", line):
+            if fence_start == -1:
+                fence_start = i
+            else:
+                fence_end = i
+                break
+    if fence_start != -1 and fence_end != -1:
+        return "\n".join(lines[fence_start + 1 : fence_end]).strip()
+    return text.strip()
 
 
 def preflight() -> bool:

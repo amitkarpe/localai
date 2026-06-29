@@ -12,9 +12,19 @@ import sys
 
 
 def strip_code_fences(text: str) -> str:
-    return "\n".join(
-        line for line in text.splitlines() if not re.match(r"^\s*```", line)
-    ).strip()
+    lines = text.splitlines()
+    fence_start = -1
+    fence_end = -1
+    for i, line in enumerate(lines):
+        if re.match(r"^\s*```", line):
+            if fence_start == -1:
+                fence_start = i
+            else:
+                fence_end = i
+                break
+    if fence_start != -1 and fence_end != -1:
+        return "\n".join(lines[fence_start + 1 : fence_end]).strip()
+    return text.strip()
 
 
 CASES = [
@@ -34,8 +44,28 @@ CASES = [
         {"task": "healthcheck", "status": "ok"},
     ),
     (
-        "leading-trailing-text-fails",
+        "fenced-with-surrounding-text",
+        'Sure, here is the result:\n```json\n{"task":"healthcheck","status":"ok"}\n```\nHope that helps!',
+        {"task": "healthcheck", "status": "ok"},
+    ),
+    (
+        "fenced-leading-text-only",
+        'The answer is:\n```\n{"task":"healthcheck","status":"ok"}\n```',
+        {"task": "healthcheck", "status": "ok"},
+    ),
+    (
+        "leading-text-no-fence-fails",
         'Here is JSON:\n{"task":"healthcheck","status":"ok"}',
+        None,
+    ),
+    (
+        "whitespace-before-fence",
+        '  ```json\n{"task":"healthcheck","status":"ok"}\n  ```',
+        {"task": "healthcheck", "status": "ok"},
+    ),
+    (
+        "empty-fence-yields-none",
+        '```json\n\n```',
         None,
     ),
 ]
