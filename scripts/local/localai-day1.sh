@@ -48,7 +48,32 @@ log() {
 
 strip_code_fences() {
   local text="$1"
-  printf '%s\n' "$text" | sed -E '/^[[:space:]]*```/d'
+  awk '
+    {
+      original[++original_count] = $0
+    }
+    /^[[:space:]]*```/ {
+      if (!inside_fence) {
+        inside_fence = 1
+        next
+      }
+      for (i = 1; i <= fenced_count; i++) {
+        print fenced[i]
+      }
+      closed_fence = 1
+      exit
+    }
+    inside_fence {
+      fenced[++fenced_count] = $0
+    }
+    END {
+      if (!closed_fence) {
+        for (i = 1; i <= original_count; i++) {
+          print original[i]
+        }
+      }
+    }
+  ' <<<"$text"
 }
 
 json_val() {
